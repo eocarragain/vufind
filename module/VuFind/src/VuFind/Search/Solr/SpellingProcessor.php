@@ -157,6 +157,19 @@ class SpellingProcessor
     }
 
     /**
+     * Get collated spelling suggestions for a query.
+     *
+     * @param Spellcheck    $spellcheck Complete spellcheck information
+     * @param AbstractQuery $query      Query for which info should be retrieved
+     *
+     * @return array
+     */
+    public function getCollations(Spellcheck $spellcheck, AbstractQuery $query)
+    {
+        return $spellcheck->getCollations();
+    }
+
+    /**
      * Process spelling suggestions.
      *
      * @param array  $suggestions Raw suggestions from getSuggestions()

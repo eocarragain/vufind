@@ -52,6 +52,13 @@ class Spellcheck implements IteratorAggregate, Countable
     protected $terms;
 
     /**
+     * Spellcheck collated terms
+     *
+     * @var ArrayObject
+     */
+    protected $collations;
+
+    /**
      * Spelling query that generated suggestions
      *
      * @var string
@@ -69,8 +76,12 @@ class Spellcheck implements IteratorAggregate, Countable
     public function __construct(array $spellcheck, $query)
     {
         $this->terms = new ArrayObject();
+        $this->collations = new ArrayObject();
         $list = new NamedList($spellcheck);
         foreach ($list as $term => $info) {
+            if ($term == "collation") {
+                $this->collations->append($info);
+            }
             if (is_array($info)) {
                 $this->terms->offsetSet($term, $info);
             }
@@ -86,6 +97,16 @@ class Spellcheck implements IteratorAggregate, Countable
     public function getQuery()
     {
         return $this->query;
+    }
+	
+	/**
+     * Get spelling collations.
+     *
+     * @return ArrayObject
+     */
+    public function getCollations()
+    {
+        return $this->collations;
     }
 
     /**

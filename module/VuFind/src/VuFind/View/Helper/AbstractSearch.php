@@ -68,30 +68,29 @@ abstract class AbstractSearch extends AbstractHelper
      */
     public function renderSpellingSuggestions($msg, $results, $view)
     {
-        $spellingSuggestions = $results->getSpellingSuggestions();
-        if (empty($spellingSuggestions)) {
+        $spellingCollations = $results->getSpellingCollations();
+        if ($spellingCollations->count() == 0) {
             return '';
         }
+        $displayQuery = $results->getParams()->getDisplayQuery();
+        $resultsTotal = $results->getResultTotal();
 
         $html = '<div class="' . $this->getContainerClass() . '">';
-        $html .= $msg;
-        foreach ($spellingSuggestions as $term => $details) {
-            $html .= '<br/>' . $view->escapeHtml($term) . ' &raquo; ';
-            $i = 0;
-            foreach ($details['suggestions'] as $word => $data) {
-                if ($i++ > 0) {
-                    $html .= ', ';
-                }
-                $html .= '<a href="'
-                    . $results->getUrlQuery()
-                        ->replaceTerm($term, $data['new_term'])
-                    . '">' . $view->escapeHtml($word) . '</a>';
-                if (isset($data['expand_term']) && !empty($data['expand_term'])) {
-                    $url = $results->getUrlQuery()
-                        ->replaceTerm($term, $data['expand_term']);
-                    $html .= $this->renderExpandLink($url, $view);
-                }
+		$html .= $msg;
+        $html .= '<br/>' . $this->view->escapeHtml($displayQuery) . ' &raquo; ';
+        $i = 0;
+        foreach ($spellingCollations as $collation) {
+            if ($i++ > 0) {
+               $html .= ', ';
             }
+            $html .= '<a href="' . $results->getUrlQuery()
+                                     ->replaceTerm($displayQuery, $collation) . '">' . $collation . '</a>';
+			// Only offer expansions if the initial query gave at least one result
+			if ($resultsTotal > 0) {
+                $url = $results->getUrlQuery()
+                    ->replaceTerm($displayQuery, '(' . $displayQuery .') OR (' .$collation . ')'); 
+			    $html .= $this->renderExpandLink($url, $view);
+			}
         }
         $html .= '</div>';
         return $html;

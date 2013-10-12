@@ -357,8 +357,13 @@
        <str name="version">2.1</str>
         -->
      <str name="spellcheck.extendedResults">true</str>
-     <str name="spellcheck.onlyMorePopular">true</str>
+     <str name="spellcheck.onlyMorePopular">false</str>
      <str name="spellcheck.count">20</str>
+     <str name="spellcheck.alternativeTermCount">5</str>
+     <str name="spellcheck.maxResultsForSuggest">50</str>
+     <str name="spellcheck.collate">true</str>
+     <str name="spellcheck.maxCollations">5</str>
+     <str name="spellcheck.maxCollationTries">100</str>
     </lst>
     <arr name="last-components">
       <str>spellcheck</str>
@@ -379,8 +384,13 @@
      <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
      <str name="echoParams">explicit</str>
      <str name="spellcheck.extendedResults">true</str>
-     <str name="spellcheck.onlyMorePopular">true</str>
+     <str name="spellcheck.onlyMorePopular">false</str>
      <str name="spellcheck.count">20</str>
+     <str name="spellcheck.alternativeTermCount">5</str>
+     <str name="spellcheck.maxResultsForSuggest">50</str>
+     <str name="spellcheck.collate">true</str>
+     <str name="spellcheck.maxCollations">5</str>
+     <str name="spellcheck.maxCollationTries">100</str>
     </lst>
     <arr name="last-components">
       <str>spellcheck</str>

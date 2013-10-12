@@ -135,6 +135,8 @@ class Results extends \VuFind\Search\Base\Results
         $this->spellingQuery = $spellcheck->getQuery();
         $this->suggestions = $this->getSpellingProcessor()
             ->getSuggestions($spellcheck, $this->getParams()->getQuery());
+        $this->collations = $this->getSpellingProcessor()
+            ->getCollations($spellcheck, $this->getParams()->getQuery());
 
         // Construct record drivers for all the items in the response:
         $this->results = $collection->getRecords();
@@ -214,6 +216,16 @@ class Results extends \VuFind\Search\Base\Results
         $tokens = $this->spellingTokens($this->spellingQuery);
         return $this->getSpellingProcessor()
             ->processSuggestions($suggestions, $tokens, $this->getParams());
+    }
+
+    /**
+     * Return collated spellinsg suggestions
+     *
+     * @return array Collated spelling suggestion data
+     */
+    public function getSpellingCollations()
+    {
+        return $this->collations;
     }
 
     /**
