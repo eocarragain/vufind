@@ -133,8 +133,6 @@ class Results extends \VuFind\Search\Base\Results
         // Process spelling suggestions
         $spellcheck = $collection->getSpellcheck();
         $this->spellingQuery = $spellcheck->getQuery();
-        $this->suggestions = $this->getSpellingProcessor()
-            ->getSuggestions($spellcheck, $this->getParams()->getQuery());
         $this->collations = $this->getSpellingProcessor()
             ->getCollations($spellcheck, $this->getParams()->getQuery());
 
@@ -205,21 +203,7 @@ class Results extends \VuFind\Search\Base\Results
     }
 
     /**
-     * Turn the list of spelling suggestions into an array of urls
-     *   for on-screen use to implement the suggestions.
-     *
-     * @return array Spelling suggestion data arrays
-     */
-    public function getSpellingSuggestions()
-    {
-        $suggestions = $this->getRawSuggestions();
-        $tokens = $this->spellingTokens($this->spellingQuery);
-        return $this->getSpellingProcessor()
-            ->processSuggestions($suggestions, $tokens, $this->getParams());
-    }
-
-    /**
-     * Return collated spellinsg suggestions
+     * Return collated spelling suggestions
      *
      * @return array Collated spelling suggestion data
      */

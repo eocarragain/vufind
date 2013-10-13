@@ -69,14 +69,14 @@ abstract class AbstractSearch extends AbstractHelper
     public function renderSpellingSuggestions($msg, $results, $view)
     {
         $spellingCollations = $results->getSpellingCollations();
-        if ($spellingCollations->count() == 0) {
+        if (empty($spellingCollations)) {
             return '';
         }
         $displayQuery = $results->getParams()->getDisplayQuery();
         $resultsTotal = $results->getResultTotal();
 
         $html = '<div class="' . $this->getContainerClass() . '">';
-		$html .= $msg;
+        $html .= $msg;
         $html .= '<br/>' . $this->view->escapeHtml($displayQuery) . ' &raquo; ';
         $i = 0;
         foreach ($spellingCollations as $collation) {
@@ -84,13 +84,13 @@ abstract class AbstractSearch extends AbstractHelper
                $html .= ', ';
             }
             $html .= '<a href="' . $results->getUrlQuery()
-                                     ->replaceTerm($displayQuery, $collation) . '">' . $collation . '</a>';
-			// Only offer expansions if the initial query gave at least one result
-			if ($resultsTotal > 0) {
+                                     ->replaceTerm($displayQuery, $collation['collation']) . '">' . $collation['collation'] . '</a>';
+            // Only offer expansions if the initial query gave at least one result
+            if ($resultsTotal > 0 && $collation['expand_collation'] != '') {
                 $url = $results->getUrlQuery()
-                    ->replaceTerm($displayQuery, '(' . $displayQuery .') OR (' .$collation . ')'); 
-			    $html .= $this->renderExpandLink($url, $view);
-			}
+                    ->replaceTerm($displayQuery, $collation['expand_collation']); 
+                $html .= $this->renderExpandLink($url, $view);
+            }
         }
         $html .= '</div>';
         return $html;

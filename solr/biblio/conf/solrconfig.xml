@@ -356,7 +356,8 @@
        <str name="fl">*</str>
        <str name="version">2.1</str>
         -->
-     <str name="spellcheck.extendedResults">true</str>
+	 <str name="spellcheck.dictionary">basicSpell</str>
+     <str name="spellcheck.extendedResults">false</str>
      <str name="spellcheck.onlyMorePopular">false</str>
      <str name="spellcheck.count">20</str>
      <str name="spellcheck.alternativeTermCount">5</str>
@@ -383,7 +384,8 @@
      <str name="defType">dismax</str>
      <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
      <str name="echoParams">explicit</str>
-     <str name="spellcheck.extendedResults">true</str>
+     <str name="spellcheck.dictionary">basicSpell</str>
+     <str name="spellcheck.extendedResults">false</str>
      <str name="spellcheck.onlyMorePopular">false</str>
      <str name="spellcheck.count">20</str>
      <str name="spellcheck.alternativeTermCount">5</str>
@@ -463,14 +465,6 @@
   </requestHandler>
 
   <searchComponent name="spellcheck" class="org.apache.solr.handler.component.SpellCheckComponent">
-    <lst name="spellchecker">
-      <str name="name">default</str>
-      <str name="field">spellingShingle</str>
-      <str name="accuracy">0.75</str>
-      <str name="spellcheckIndexDir">./spellShingle</str>
-      <str name="queryAnalyzerFieldType">textSpellShingle</str>
-      <str name="buildOnOptimize">true</str>
-    </lst>
     <lst name="spellchecker">
       <str name="name">basicSpell</str>
       <str name="field">spelling</str>

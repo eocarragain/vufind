@@ -45,13 +45,6 @@ use Countable;
 class Spellcheck implements IteratorAggregate, Countable
 {
     /**
-     * Spellcheck terms mapped to term information.
-     *
-     * @var ArrayObject
-     */
-    protected $terms;
-
-    /**
      * Spellcheck collated terms
      *
      * @var ArrayObject
@@ -75,15 +68,11 @@ class Spellcheck implements IteratorAggregate, Countable
      */
     public function __construct(array $spellcheck, $query)
     {
-        $this->terms = new ArrayObject();
         $this->collations = new ArrayObject();
         $list = new NamedList($spellcheck);
         foreach ($list as $term => $info) {
             if ($term == "collation") {
                 $this->collations->append($info);
-            }
-            if (is_array($info)) {
-                $this->terms->offsetSet($term, $info);
             }
         }
         $this->query = $query;
@@ -98,8 +87,8 @@ class Spellcheck implements IteratorAggregate, Countable
     {
         return $this->query;
     }
-	
-	/**
+
+    /**
      * Get spelling collations.
      *
      * @return ArrayObject
@@ -107,23 +96,6 @@ class Spellcheck implements IteratorAggregate, Countable
     public function getCollations()
     {
         return $this->collations;
-    }
-
-    /**
-     * Merge in other spellcheck information.
-     *
-     * @param Spellcheck $spellcheck Other spellcheck information
-     *
-     * @return void
-     */
-    public function mergeWith(Spellcheck $spellcheck)
-    {
-        $this->terms->uksort(array($this, 'compareTermLength'));
-        foreach ($spellcheck as $term => $info) {
-            if (!$this->contains($term)) {
-                $this->terms->offsetSet($term, $info);
-            }
-        }
     }
 
     /// IteratorAggregate
@@ -148,53 +120,6 @@ class Spellcheck implements IteratorAggregate, Countable
     public function count()
     {
         return $this->terms->count();
-    }
-
-    /// Internal API
-
-    /**
-     * Return true if we already have information for the term.
-     *
-     * @param string $term Term to check
-     *
-     * @return boolean
-     */
-    protected function contains($term)
-    {
-        if ($this->terms->offsetExists($term)) {
-            return true;
-        }
-
-        $qTerm = preg_quote($term, '/');
-        $length = strlen($term);
-        foreach ($this->terms as $key => $value) {
-            if ($length > strlen($key)) {
-                return false;
-            }
-            if (strstr($key, $term) && preg_match("/\b$qTerm\b/u", $key)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Compare length of two terms such that terms are sorted by descending
-     * length.
-     *
-     * This method belongs to the internal API but must be declared public in
-     * order to be used for ArrayObject::uksort().
-     *
-     * @param string $a First term
-     * @param string $b Second term
-     *
-     * @return integer
-     *
-     * @see    http://www.php.net/manual/en/arrayobject.uksort.php
-     */
-    public function compareTermLength($a, $b)
-    {
-        return (strlen($b) - strlen($a));
     }
 
 }
