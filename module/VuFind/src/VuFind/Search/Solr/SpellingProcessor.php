@@ -115,12 +115,12 @@ class SpellingProcessor
 	    $collations = array();
 		
 		// don't continue if the original query was entirely numeric
-        if ($this->shouldSkipNumericSpelling() && is_numeric($query->getString())) {
+        if ($this->shouldSkipNumericSpelling() && is_numeric($query->getAllTerms())) {
             return $collations;
         }
 
         // don't continue if we've already done an expansion
-        if (strpos($query->getString(), ') OR (') != false) {
+        if (strpos($query->getAllTerms(), ') OR (') != false) {
             return $collations;
         }
 
